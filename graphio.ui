@@ -25,8 +25,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>460</width>
-         <height>364</height>
+         <width>329</width>
+         <height>89</height>
         </rect>
        </property>
        <attribute name="label">
@@ -87,7 +87,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -114,7 +114,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox">
+         <widget class="QComboBox" name="cb_nodes">
           <property name="toolTipDuration">
            <number>0</number>
           </property>
@@ -201,7 +201,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox_2">
+         <widget class="QComboBox" name="cb_starting_node">
           <property name="editable">
            <bool>true</bool>
           </property>
@@ -237,7 +237,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox_3">
+         <widget class="QComboBox" name="cb_ending_node">
           <property name="editable">
            <bool>true</bool>
           </property>
