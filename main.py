@@ -69,12 +69,19 @@ class UiGraphio(QMainWindow):
             self.ui.cb_ending_node.removeItem(index)
 
     @pyqtSlot()
-    def on_bt_add_branch_clicked(self):
+    def on_bt_add_edge_clicked(self):
         """ Slot when click on Add branch button """
-        pass
+        start = self.ui.cb_starting_node.currentText()
+        end = self.ui.cb_ending_node.currentText()
+        print('adding:', start, end)
+        if start and end:
+            self.add_cb_item(start)
+            self.add_cb_item(end)
+            self.graph.add_edge(start, end)
+            self.redraw()
 
     @pyqtSlot()
-    def on_bt_del_branch_clicked(self):
+    def on_bt_del_edge_clicked(self):
         """ Slot when click on Delete branch button """
         pass
 
