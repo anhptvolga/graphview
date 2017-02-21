@@ -4,15 +4,10 @@
 
 import sys
 import graphio
-
-import matplotlib.pyplot as plt
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
-from matplotlib.figure import Figure
-import networkx as nx
-
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from pygraphviz import AGraph
+from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsPixmapItem
 from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtGui import QPixmap
 
 
 class UiGraphio(QMainWindow):
@@ -28,33 +23,48 @@ class UiGraphio(QMainWindow):
         self.ui = graphio.Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.figure = plt.figure()
-        self.ui.graphicsView = FigureCanvasQTAgg(self.figure)
-        self.ui.gridLayout.addWidget(self.ui.graphicsView, 0, 1, 1, 1)
+        self.scene_graph = QGraphicsScene()
+        self.ui.graphicsView.setScene(self.scene_graph)
+        self.ui.graphicsView.update()
 
-        self.graph = nx.MultiDiGraph()
-
-    def add_node(self, label):
-        if not self.graph.has_node(label):
-            self.graph.add_node(label)
-            self.redraw()
-            self.add_cb_item(label)
+        self.graph = AGraph(strict=False, directed=True)
+        self.graph.layout(prog='dot')
 
     def add_cb_item(self, label):
-        self.ui.cb_nodes.addItem(label)
-        self.ui.cb_starting_node.addItem(label)
-        self.ui.cb_ending_node.addItem(label)
+        n = self.ui.cb_nodes.count()
+        i = 0
+        while i < n:
+            itext = self.ui.cb_nodes.itemText(i)
+            if label == itext:
+                return
+            elif label < itext:
+                break
+            i += 1
+        # insert item to lists
+        self.ui.cb_nodes.insertItem(i, label)
+        self.ui.cb_starting_node.insertItem(i, label)
+        self.ui.cb_ending_node.insertItem(i, label)
+
+    def reset_combo_boxes(self):
+        self.ui.cb_nodes.clearEditText()
+        self.ui.cb_starting_node.clearEditText()
+        self.ui.cb_ending_node.clearEditText()
 
     def redraw(self):
-        self.figure.clf()
-        # nx.draw(self.graph, hold=True, with_labels=True)
-        nx.draw_circular(self.graph, hold=True, with_labels=True)
-        self.ui.graphicsView.draw()
+        self.graph.draw('graph', 'png', 'dot')
+        self.scene_graph.clear()
+        self.scene_graph.addItem(QGraphicsPixmapItem(QPixmap('graph')))
+        self.ui.graphicsView.update()
 
     @pyqtSlot()
     def on_bt_add_node_clicked(self):
         """ Slot when click on Add node button """
-        self.add_node(self.ui.cb_nodes.currentText())
+        label = self.ui.cb_nodes.currentText()
+        if not self.graph.has_node(label):
+            self.add_cb_item(label)
+            self.graph.add_node(label)
+            self.redraw()
+        self.reset_combo_boxes()
 
     @pyqtSlot()
     def on_bt_del_node_clicked(self):
@@ -67,23 +77,31 @@ class UiGraphio(QMainWindow):
             self.ui.cb_nodes.removeItem(index)
             self.ui.cb_starting_node.removeItem(index)
             self.ui.cb_ending_node.removeItem(index)
+        self.reset_combo_boxes()
 
     @pyqtSlot()
     def on_bt_add_edge_clicked(self):
         """ Slot when click on Add branch button """
         start = self.ui.cb_starting_node.currentText()
         end = self.ui.cb_ending_node.currentText()
-        print('adding:', start, end)
+        weight = self.ui.sb_weight_edge.value()
         if start and end:
             self.add_cb_item(start)
             self.add_cb_item(end)
-            self.graph.add_edge(start, end)
+            self.graph.add_edge(start, end, label=weight)
             self.redraw()
+        self.reset_combo_boxes()
 
     @pyqtSlot()
     def on_bt_del_edge_clicked(self):
         """ Slot when click on Delete branch button """
-        pass
+        start = self.ui.cb_starting_node.currentText()
+        end = self.ui.cb_ending_node.currentText()
+        weight = self.ui.sb_weight_edge.value()
+        if start and end:
+            self.graph.remove_edge(start, end, weight)
+            self.redraw()
+        self.reset_combo_boxes()
 
 
 if __name__ == '__main__':

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'graphio.ui'
 #
-# Created by: PyQt5 UI code generator 5.7.1
+# Created by: PyQt5 UI code generator 5.8
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -19,7 +19,7 @@ class Ui_MainWindow(object):
         self.toolbox_view = QtWidgets.QToolBox(self.centralwidget)
         self.toolbox_view.setObjectName("toolbox_view")
         self.matrixpage = QtWidgets.QWidget()
-        self.matrixpage.setGeometry(QtCore.QRect(0, 0, 329, 89))
+        self.matrixpage.setGeometry(QtCore.QRect(0, 0, 329, 88))
         self.matrixpage.setObjectName("matrixpage")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.matrixpage)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
@@ -30,10 +30,13 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.gv_table)
         self.toolbox_view.addItem(self.matrixpage, "")
         self.insidentpage = QtWidgets.QWidget()
-        self.insidentpage.setGeometry(QtCore.QRect(0, 0, 460, 364))
+        self.insidentpage.setGeometry(QtCore.QRect(0, 0, 460, 380))
         self.insidentpage.setObjectName("insidentpage")
         self.toolbox_view.addItem(self.insidentpage, "")
         self.gridLayout.addWidget(self.toolbox_view, 0, 0, 1, 1)
+        self.graphicsView = QtWidgets.QGraphicsView(self.centralwidget)
+        self.graphicsView.setObjectName("graphicsView")
+        self.gridLayout.addWidget(self.graphicsView, 0, 1, 1, 1)
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
         self.tabWidget.setMinimumSize(QtCore.QSize(0, 0))
         self.tabWidget.setMaximumSize(QtCore.QSize(16777215, 100))
@@ -116,6 +119,17 @@ class Ui_MainWindow(object):
         self.cb_ending_node.setEditable(True)
         self.cb_ending_node.setObjectName("cb_ending_node")
         self.horizontalLayout_3.addWidget(self.cb_ending_node)
+        self.label_4 = QtWidgets.QLabel(self.tab_2)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
+        self.label_4.setSizePolicy(sizePolicy)
+        self.label_4.setObjectName("label_4")
+        self.horizontalLayout_3.addWidget(self.label_4)
+        self.sb_weight_edge = QtWidgets.QSpinBox(self.tab_2)
+        self.sb_weight_edge.setObjectName("sb_weight_edge")
+        self.horizontalLayout_3.addWidget(self.sb_weight_edge)
         spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem2)
         self.bt_add_edge = QtWidgets.QPushButton(self.tab_2)
@@ -130,7 +144,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.toolbox_view.setCurrentIndex(1)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -144,6 +158,7 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Node"))
         self.label_2.setText(_translate("MainWindow", "Start node"))
         self.label_3.setText(_translate("MainWindow", "End node"))
+        self.label_4.setText(_translate("MainWindow", "Weight"))
         self.bt_add_edge.setText(_translate("MainWindow", "Add"))
         self.bt_del_edge.setText(_translate("MainWindow", "Delete"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Edge"))
