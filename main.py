@@ -69,6 +69,17 @@ class UiGraphio(QMainWindow):
             self.ui.tw_edges.setItem(i, 0, QTableWidgetItem(edge[0]))
             self.ui.tw_edges.setItem(i, 1, QTableWidgetItem(edge[1]))
 
+    def update_adj_list(self):
+        nodes = self.graph.nodes()
+        self.ui.tw_adjlist.setRowCount(self.graph.number_of_nodes())
+        self.ui.tw_adjlist.setVerticalHeaderLabels(nodes)
+        for (i, node) in enumerate(nodes):
+            value = ''
+            for adj in self.graph.out_edges(node):
+                value += adj[1] + ', '
+            self.ui.tw_adjlist.setItem(i, 0, QTableWidgetItem(value[:-2]))
+
+
     #####################################################
     # Reset editors
     #####################################################
@@ -162,6 +173,8 @@ class UiGraphio(QMainWindow):
             self.update_matrix_incidence()
         elif index == 2:
             self.update_list_edges()
+        elif index == 3:
+            self.update_adj_list()
 
 
 if __name__ == '__main__':
