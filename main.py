@@ -27,7 +27,7 @@ class UiGraphio(QMainWindow):
         self.ui.graphicsView.setScene(self.scene_graph)
         self.ui.graphicsView.update()
 
-        self.graph = AGraph(strict=False, directed=True)
+        self.graph = AGraph(strict=True, directed=True)
         self.graph.layout(prog='dot')
 
     #####################################################
@@ -44,7 +44,7 @@ class UiGraphio(QMainWindow):
         for (i, u) in enumerate(self.graph.nodes()):
             for (j, v) in enumerate(self.graph.nodes_iter()):
                 if self.graph.has_edge(u, v):
-                    self.ui.tw_adjmatrix.setItem(i, j, QTableWidgetItem(self.graph.get_edge(u, v).key))
+                    self.ui.tw_adjmatrix.setItem(i, j, QTableWidgetItem(self.graph.get_edge(u, v).attr['label']))
                 else:
                     self.ui.tw_adjmatrix.setItem(i, j, QTableWidgetItem(str(0)))
 
@@ -147,7 +147,7 @@ class UiGraphio(QMainWindow):
         if start and end:
             self.add_cb_item(start)
             self.add_cb_item(end)
-            self.graph.add_edge(start, end, weight, label=weight)
+            self.graph.add_edge(start, end, label=weight)
             self.redraw()
 
     @pyqtSlot()
@@ -156,8 +156,8 @@ class UiGraphio(QMainWindow):
         start = self.ui.cb_starting_node.currentText()
         end = self.ui.cb_ending_node.currentText()
         weight = self.ui.sb_weight_edge.value()
-        if start and end and self.graph.has_edge(start, end, weight):
-            self.graph.remove_edge(start, end, weight)
+        if start and end and self.graph.has_edge(start, end):
+            self.graph.remove_edge(start, end)
             self.redraw()
 
     @pyqtSlot(int)
