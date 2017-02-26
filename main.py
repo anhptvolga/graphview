@@ -62,6 +62,13 @@ class UiGraphio(QMainWindow):
                 elif (u == edg[1]): value = -1
                 self.ui.tw_incmatrix.setItem(i, j, QTableWidgetItem(str(value)))
 
+    def update_list_edges(self):
+        edges = self.graph.edges()
+        self.ui.tw_edges.setRowCount(len(edges))
+        for (i, edge) in enumerate(edges):
+            self.ui.tw_edges.setItem(i, 0, QTableWidgetItem(edge[0]))
+            self.ui.tw_edges.setItem(i, 1, QTableWidgetItem(edge[1]))
+
     #####################################################
     # Reset editors
     #####################################################
@@ -138,7 +145,7 @@ class UiGraphio(QMainWindow):
         start = self.ui.cb_starting_node.currentText()
         end = self.ui.cb_ending_node.currentText()
         weight = self.ui.sb_weight_edge.value()
-        if start and end:
+        if start and end and self.graph.has_edge(start, end, weight):
             self.graph.remove_edge(start, end, weight)
             self.redraw()
 
@@ -153,6 +160,8 @@ class UiGraphio(QMainWindow):
             self.update_adj_matrix()
         elif index == 1:
             self.update_matrix_incidence()
+        elif index == 2:
+            self.update_list_edges()
 
 
 if __name__ == '__main__':
